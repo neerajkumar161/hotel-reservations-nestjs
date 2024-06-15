@@ -9,14 +9,58 @@ type UserEntity {
   phoneNumber: String!
 }
 
+type LocationObjectDto {
+  lat: String!
+  long: String!
+}
+
+type HotelEntity {
+  _id: String!
+  name: String!
+  location: LocationObjectDto!
+  rating: String!
+  baseAmount: Float!
+  taxAmount: Float!
+}
+
+type ReservationEntity {
+  hotelId: String!
+  userId: String!
+  arrivalDate: DateTime!
+  departureDate: DateTime!
+  _id: String!
+  amount: Float!
+  status: ReservationStatus!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""Status of the reservation"""
+enum ReservationStatus {
+  active
+  cancelled
+}
+
 type Query {
   hello: String!
   users: [UserEntity!]!
+  getHotel(_id: String!): HotelEntity!
+  getHotels: [HotelEntity!]!
+  getReservations: [ReservationEntity!]!
+  getReservation(_id: String!): ReservationEntity!
 }
 
 type Mutation {
   signUp(userInput: CreateUserDto!): UserEntity!
   signIn(userInput: LoginUserDto!): UserEntity!
+  createHotel(createHotelDto: CreateHotelDto!): HotelEntity!
+  updateHotel(_id: String!, updateHotelDto: UpdateHotelDto!): HotelEntity!
+  deleteHotel(_id: String!): HotelEntity!
+  createReservation(createReservationDto: CreateReservationDto!): ReservationEntity!
+  cancelReservation(_id: String!): String!
 }
 
 input CreateUserDto {
@@ -29,4 +73,32 @@ input CreateUserDto {
 input LoginUserDto {
   email: String!
   password: String!
+}
+
+input CreateHotelDto {
+  name: String!
+  location: LocationInputDto!
+  rating: String!
+  baseAmount: Float!
+  taxAmount: Float!
+}
+
+input LocationInputDto {
+  lat: String!
+  long: String!
+}
+
+input UpdateHotelDto {
+  name: String
+  location: LocationInputDto
+  rating: String
+  baseAmount: Float
+  taxAmount: Float
+}
+
+input CreateReservationDto {
+  hotelId: String!
+  userId: String!
+  arrivalDate: DateTime!
+  departureDate: DateTime!
 }

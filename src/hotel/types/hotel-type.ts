@@ -1,7 +1,7 @@
 export type THotel = {
-  id: number;
+  id?: number;
   name: string;
-  location: string;
+  location: { lat: string; long: string };
   rating: string;
   baseAmount: number;
   taxAmount: number;

@@ -1,10 +1,9 @@
 export type TReservation = {
-  id: number;
-  hotelId: number;
-  userId: number; // guestId
+  id?: number;
+  hotelId: string;
+  userId: string; // guestId
   arrivalDate: Date;
   departureDate: Date;
   status: 'active' | 'cancelled';
-  checkOut: string;
-  amount: number;
+  amount: number; // baseAmount + taxAmount in hotel
 };

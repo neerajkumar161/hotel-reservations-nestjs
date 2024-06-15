@@ -1,16 +1,17 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { LocationObjectDto } from '../dto/location-dto';
 import { THotel } from '../types/hotel-type';
 
 @ObjectType()
 export class HotelEntity implements Partial<THotel> {
-  @Field((type) => Int)
-  id: number;
+  @Field((type) => String)
+  _id: string;
 
   @Field()
   name: string;
 
-  @Field()
-  location: string;
+  @Field((type) => LocationObjectDto)
+  location: { lat: string; long: string; };
 
   @Field()
   rating: string;
