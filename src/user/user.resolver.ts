@@ -3,9 +3,10 @@ import { Types } from 'mongoose';
 import { HotelLoader } from 'src/dataloader/hotel.loader';
 import { UserLoader } from 'src/dataloader/user.loader';
 import { HotelObjectDto } from 'src/hotel/dto/create-hotel-dto';
+import { ReservationPage } from 'src/reservation/entities/reservation-page-dto';
 import { ReservationEntity } from 'src/reservation/entities/reservation.entity';
 import { UserObjectDto } from './dto/create-user-dto';
-import { DateRangeDto } from './dto/date-range-dto';
+import { PastStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { UserEntity } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -28,24 +29,22 @@ export class UserResolver {
     return this.userService.getUsers();
   }
 
-  // Required Pagination
   @Query(() => StaySummary)
   async guestSummary(@Args('userId') userId: string) {
     return this.userService.getUserStaySummary(userId);
   }
 
-  // Required Pagination
-  @Query(() => [ReservationEntity])
-  async getPastStays(
-    @Args('dateRange') args: DateRangeDto,
-  ) {
-    // Using Date Range of Past Days like past 6 months or 12 months
-    console.log('Args', args);
-    return this.userService.getPastStays(
-      args.userId,
-      args.startDate,
-      args.endDate,
-    );
+  @Query(() => ReservationPage)
+  async getPastStays(@Args('pastStaysArgs') args: PastStaysDto) {
+    const { reservations, nextCurosr } =
+      await this.userService.getPastStays(args);
+
+    const edges = reservations.map((reservation) => ({
+      cursor: reservation._id,
+      node: reservation,
+    }));
+
+    return { edges, nextCurosr };
   }
 
   @ResolveField(() => HotelObjectDto)

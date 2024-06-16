@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Reservation } from 'src/reservation/schemas/reservation.schema';
+import { PastStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { User } from './schemas/user.schema';
 
@@ -38,8 +39,6 @@ export class UserService {
         path: 'userId',
       });
 
-    console.log('UserReservations', userReservations);
-
     const upComingStays = userReservations.filter(
       (reservation) => reservation.arrivalDate > new Date(),
     );
@@ -51,7 +50,6 @@ export class UserService {
       (reservation) => reservation.status === 'cancelled',
     );
 
-    console.log(upComingStays, pastStays, cancelledStays);
     return {
       guestId: userId,
       upcomingStaysCount: upComingStays.length,
@@ -80,20 +78,35 @@ export class UserService {
         (acc, stay) => acc + stay.amount,
         0,
       ),
-    };
+      }
   }
 
-  async getPastStays(userId: string, startDate: Date, endDate: Date) {
-    console.log(typeof startDate, endDate);
+  async getPastStays(args: PastStaysDto): Promise<{
+    reservations: Reservation[];
+    nextCurosr: string;
+  }> {
+    const query = {
+      userId: new Types.ObjectId(args.userId),
+      departureDate: { $gte: args.startDate, $lte: args.endDate },
+    };
+
+    if (args.cursor) {
+      query['_id'] = { $gt: args.cursor };
+    }
+
     const pastStays = await this.reservationModel
-      .find({
-        userId: new Types.ObjectId(userId),
-        departureDate: { $gte: startDate, $lte: endDate },
-      })
+      .find(query)
+      .sort({ _id: 1 })
+      .limit(args.limit + 1)
+      .exec();
 
-      console.log('Past Stays', pastStays);
+    const hasNextPage = pastStays.length > args.limit;
+    const nextCurosr = hasNextPage ? pastStays[args.limit - 1]._id : null;
 
-      return pastStays;
+    return {
+      reservations: hasNextPage ? pastStays.slice(0, args.limit) : pastStays,
+      nextCurosr,
+    };
   }
 
   async findOne(_id: string) {

@@ -52,6 +52,16 @@ enum ReservationStatus {
   cancelled
 }
 
+type ReservationEdge {
+  cursor: ID
+  node: ReservationEntity!
+}
+
+type ReservationPage {
+  edges: [ReservationEdge!]!
+  nextCursor: String
+}
+
 type StaySummary {
   guestId: String!
   upcomingStaysCount: Int!
@@ -73,28 +83,20 @@ type UserEntity {
   userId: UserObjectDto!
 }
 
-type ReservationEdge {
-  cursor: ID
-  node: ReservationEntity!
-}
-
-type ReservationPage {
-  edges: [ReservationEdge!]!
-  nextCursor: String
-}
-
 type Query {
   hello: String!
   users: [UserEntity!]!
   guestSummary(userId: String!): StaySummary!
-  getPastStays(dateRange: DateRangeDto!): [ReservationEntity!]!
+  getPastStays(pastStaysArgs: PastStaysDto!): ReservationPage!
   getHotel(_id: String!): HotelEntity!
   getHotels: [HotelEntity!]!
   getReservations(paginationDto: PaginationDto!): ReservationPage!
   getReservation(_id: String!): ReservationEntity!
 }
 
-input DateRangeDto {
+input PastStaysDto {
+  cursor: ID
+  limit: Int!
   userId: String!
   startDate: DateTime!
   endDate: DateTime!

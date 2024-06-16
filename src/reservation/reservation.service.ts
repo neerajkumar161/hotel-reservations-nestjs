@@ -50,20 +50,7 @@ export class ReservationService {
       nextCursor,
     };
 
-    console.log('GetReservations', result);
     return result;
-  }
-
-  async getUserReservations(userId: string) {
-    return this.reservationModel
-      .find({ userId })
-      .populate({
-        path: 'hotelId',
-      })
-      .populate({
-        path: 'userId',
-      });
-    // return reservations;
   }
 
   getReservation(_id: string) {

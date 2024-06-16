@@ -26,19 +26,19 @@ export class ReservationResolver {
   ) {}
 
   @Query(() => ReservationPage)
-  // Pagination Required
   async getReservations(@Args('paginationDto') args: PaginationDto) {
-    const { reservations, nextCursor } = await this.reservationService.getReservations(args);
+    const { reservations, nextCursor } =
+      await this.reservationService.getReservations(args);
 
     const edges = reservations.map((reservation) => ({
       cursor: reservation._id,
       node: reservation,
-      }))
+    }));
 
-      return {
-        edges,
-        nextCursor
-      }
+    return {
+      edges,
+      nextCursor,
+    };
   }
 
   @Query(() => ReservationEntity)
