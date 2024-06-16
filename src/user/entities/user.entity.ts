@@ -3,7 +3,7 @@ import { TUser } from '../types/user-type';
 
 @ObjectType()
 export class UserEntity implements Partial<TUser> {
-  @Field((type) => String)
+  @Field(() => String)
   id: string;
 
   @Field()

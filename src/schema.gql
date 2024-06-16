@@ -2,16 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserEntity {
-  id: String!
-  name: String!
-  email: String!
-  phoneNumber: String!
-}
-
 type LocationObjectDto {
   lat: String!
   long: String!
+}
+
+type HotelObjectDto {
+  name: String!
+  rating: String!
+  baseAmount: Float!
+  taxAmount: Float!
+  _id: String!
 }
 
 type HotelEntity {
@@ -23,12 +24,19 @@ type HotelEntity {
   taxAmount: Float!
 }
 
+type UserObjectDto {
+  name: String!
+  email: String!
+  phoneNumber: String!
+  _id: String!
+}
+
 type ReservationEntity {
-  hotelId: String!
-  userId: String!
   arrivalDate: DateTime!
   departureDate: DateTime!
   _id: String!
+  hotelId: HotelObjectDto!
+  userId: UserObjectDto!
   amount: Float!
   status: ReservationStatus!
 }
@@ -44,13 +52,57 @@ enum ReservationStatus {
   cancelled
 }
 
+type StaySummary {
+  guestId: String!
+  upcomingStaysCount: Int!
+  upComingTotalAmount: Int!
+  upComingTotalNights: Int!
+  pastStaysCount: Int!
+  pastTotalAmount: Int!
+  pastTotalNights: Int!
+  cancelledStaysCount: Int!
+  totalStaysAmount: Int!
+}
+
+type UserEntity {
+  id: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  hotelId: HotelObjectDto!
+  userId: UserObjectDto!
+}
+
+type ReservationEdge {
+  cursor: ID
+  node: ReservationEntity!
+}
+
+type ReservationPage {
+  edges: [ReservationEdge!]!
+  nextCursor: String
+}
+
 type Query {
   hello: String!
   users: [UserEntity!]!
+  guestSummary(userId: String!): StaySummary!
+  getPastStays(dateRange: DateRangeDto!): [ReservationEntity!]!
   getHotel(_id: String!): HotelEntity!
   getHotels: [HotelEntity!]!
-  getReservations: [ReservationEntity!]!
+  getReservations(paginationDto: PaginationDto!): ReservationPage!
   getReservation(_id: String!): ReservationEntity!
+}
+
+input DateRangeDto {
+  userId: String!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input PaginationDto {
+  cursor: ID
+  limit: Int!
 }
 
 type Mutation {

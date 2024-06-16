@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HotelService } from 'src/hotel/hotel.service';
 import { CreateReservationDto } from './dto/create-reservation-dto';
+import { PaginationDto } from './dto/pagination-dto';
 import { Reservation } from './schemas/reservation.schema';
 
 @Injectable()
@@ -20,22 +21,49 @@ export class ReservationService {
       throw new NotFoundException('Hotel not found');
     }
 
-    reservation.amount = hotel.baseAmount * hotel.taxAmount;
+    reservation.amount = hotel.baseAmount + hotel.taxAmount;
 
     const createdReservation = await this.reservationModel.create(reservation);
     return createdReservation;
   }
 
-  async getReservations() {
+  async getReservations(
+    args: PaginationDto,
+  ): Promise<{ reservations: Reservation[]; nextCursor: string }> {
+    const query = {};
+    if (args.cursor) {
+      query['_id'] = { $gt: args.cursor };
+    }
+
     const reservations = await this.reservationModel
-      .find()
-      // We will use dataloader instead of populate
+      .find(query)
+      .sort({ _id: 1 })
+      .limit(args.limit + 1)
+      .exec();
+    const hasNextPage = reservations.length > args.limit;
+    const nextCursor = hasNextPage ? reservations[args.limit - 1]._id : null;
+
+    const result = {
+      reservations: hasNextPage
+        ? reservations.slice(0, args.limit)
+        : reservations,
+      nextCursor,
+    };
+
+    console.log('GetReservations', result);
+    return result;
+  }
+
+  async getUserReservations(userId: string) {
+    return this.reservationModel
+      .find({ userId })
       .populate({
         path: 'hotelId',
-        select: 'name',
       })
-      .populate({ path: 'userId', select: 'name' });
-    return reservations;
+      .populate({
+        path: 'userId',
+      });
+    // return reservations;
   }
 
   getReservation(_id: string) {

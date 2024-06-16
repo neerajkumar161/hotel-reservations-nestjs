@@ -1,11 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { THotel } from '../types/hotel-type';
 
 export type HotelDocument = HydratedDocument<THotel>;
 
 @Schema()
 export class Hotel implements THotel {
+  _id?: string;
+
   @Prop({ type: String })
   name: string;
 

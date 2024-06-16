@@ -6,7 +6,7 @@ import { Hotel, HotelSchema } from './schemas/hotel.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
+    MongooseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }])
   ],
   providers: [HotelResolver, HotelService],
   exports: [HotelService],

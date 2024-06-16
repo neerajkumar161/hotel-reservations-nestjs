@@ -1,8 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
 import { IsEmail, IsPhoneNumber, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateUserDto {
+  _id?: string;
+
   @Field()
   @IsString()
   readonly name: string;
@@ -20,4 +22,23 @@ export class CreateUserDto {
   @IsString()
   @MinLength(5)
   readonly password: string;
+}
+
+@ObjectType()
+export class UserObjectDto extends OmitType(
+  CreateUserDto,
+  ['password'] as const,
+  ObjectType,
+) {
+  @Field()
+  _id: string;
+
+  @Field()
+  name: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  phoneNumber: string;
 }

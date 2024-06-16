@@ -1,7 +1,7 @@
-export type TReservation = {
+export type TReservation<THotel = string, TUser = string> = {
   id?: number;
-  hotelId: string;
-  userId: string; // guestId
+  hotelId: THotel;
+  userId: TUser; // guestId
   arrivalDate: Date;
   departureDate: Date;
   status: 'active' | 'cancelled';

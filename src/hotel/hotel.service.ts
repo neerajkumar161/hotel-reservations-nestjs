@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CreateHotelDto } from './dto/create-hotel-dto';
 import { UpdateHotelDto } from './dto/update-hotel-dto';
-import { Hotel } from './schemas/hotel.schema';
+import { Hotel, HotelDocument } from './schemas/hotel.schema';
 
 @Injectable()
 export class HotelService {
@@ -16,6 +16,10 @@ export class HotelService {
 
   getHotels(): Promise<Hotel[]> {
     return this.hotelModel.find().exec();
+  }
+
+  getHotelsById(ids: Types.ObjectId[]): Promise<Hotel[]> {
+    return this.hotelModel.find({ _id: { $in: ids }}).exec();
   }
 
   async findById(_id: string): Promise<Hotel> {

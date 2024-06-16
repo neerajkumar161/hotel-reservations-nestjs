@@ -6,8 +6,7 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User implements Partial<TUser> {
-  // @Prop()
-  // _id?: string;
+  _id?: string;
 
   @Prop()
   name: string;
