@@ -37,7 +37,6 @@ import { UserModule } from './user/user.module';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
