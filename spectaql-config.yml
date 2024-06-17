@@ -1,0 +1,33 @@
+spectaql:
+  # logoFile: ./test/fixtures/logo.png
+  # faviconFile: ./test/fixtures/favicon.png
+  displayAllServers: true
+
+introspection:
+  removeTrailingPeriodFromDescriptions: false
+  schemaFile: ./src//schema.gql
+  queryNameStrategy: capitalizeFirst
+  fieldExpansionDepth: 2
+
+  spectaqlDirective:
+    enable: true
+
+extensions:
+  graphqlScalarExamples: true
+
+info:
+  title: GraphQL API Reference
+  description: This is a auto generated API reference for GraphQL API for Hotel Reservation APIs
+  termsOfService: https://www.example.com/terms
+  contact:
+    name: Github Repository
+    url: https://github.com/neerajkumar161/hotel-reservations-nestjs
+    email: ennkay161@gmail.com
+
+servers:
+  - url: https://example.com/graphql
+    description: Testing server on Vercel
+    production: true
+    headers:
+      - name: Authorization
+        example: Bearer <YOUR_TOKEN_HERE>
