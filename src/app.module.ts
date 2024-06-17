@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
+import { GraphQLError } from 'graphql';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -19,6 +20,16 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      formatError: (error: GraphQLError) => {
+        const graphQLFormattedError = {
+          message: error.message,
+          statusCode: error.extensions?.code || 500,
+          validation: error.extensions?.stacktrace[0] || null,
+          timestamp: new Date().toISOString(),
+        };
+        return graphQLFormattedError;
+      },
+
     }),
     ConfigModule.forRoot({
       isGlobal: true,

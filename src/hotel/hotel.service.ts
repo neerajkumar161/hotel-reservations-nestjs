@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CreateHotelDto } from './dto/create-hotel-dto';
 import { UpdateHotelDto } from './dto/update-hotel-dto';
-import { Hotel, HotelDocument } from './schemas/hotel.schema';
+import { Hotel } from './schemas/hotel.schema';
 
 @Injectable()
 export class HotelService {
