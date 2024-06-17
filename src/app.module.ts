@@ -20,9 +20,8 @@ import { UserModule } from './user/user.module';
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
-      introspection: true,
       // plugins: [ApolloServerPluginLandingPageLocalDefault()],
       formatError: (error: GraphQLError) => {
         const graphQLFormattedError = {
