@@ -72,7 +72,10 @@ Create a .env file and configure the following variables
  - JWT_SECRET=<Your JWT Secret>
 
 ## Documentation
-To check complete documentation of the GraphQL endpoints visit [API Reference](https://hotel-reservations-nestjs.vercel.app/api-reference)
+To check complete documentation of the GraphQL endpoints visit [API Reference](https://hotel-reservations-nestjs.vercel.app/api-reference) or use 
+- `/api-reference` endpoint for Documentation of Project  
+- `/graphql-root` for graphQL inspection
+
 
 ## Test Example
 To get all reservations of the user, you need to follow these steps
