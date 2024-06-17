@@ -33,7 +33,7 @@ dependencies:
     specifier: ^10.0.3
     version: 10.0.3(@nestjs/common@10.3.9)(passport@0.7.0)
   '@nestjs/platform-express':
-    specifier: ^10.0.0
+    specifier: ^10.3.9
     version: 10.3.9(@nestjs/common@10.3.9)(@nestjs/core@10.3.9)
   '@nestjs/serve-static':
     specifier: ^4.0.2
@@ -41,6 +41,9 @@ dependencies:
   apollo-server-express:
     specifier: ^3.13.0
     version: 3.13.0(express@4.19.2)(graphql@16.8.2)
+  aws-serverless-express:
+    specifier: ^3.4.0
+    version: 3.4.0
   class-transformer:
     specifier: ^0.5.1
     version: 0.5.1
@@ -50,6 +53,9 @@ dependencies:
   dataloader:
     specifier: ^2.2.2
     version: 2.2.2
+  express:
+    specifier: ^4.19.2
+    version: 4.19.2
   graphql:
     specifier: ^16.8.2
     version: 16.8.2
@@ -836,6 +842,14 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@codegenie/serverless-express@3.4.1:
+    resolution: {integrity: sha512-PQ3v/wDflxx168B4TwuxbbKjfmvLkyRBdvHRFS8s48hDS0Wnukm+5Dp+HiLvqwXOU7PP2+FyrK47WX4WL15Rrw==}
+    engines: {node: '>=6'}
+    dependencies:
+      binary-case: 1.1.4
+      type-is: 1.6.18
+    dev: false
 
   /@colors/colors@1.5.0:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -2206,6 +2220,15 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
+  /@vendia/serverless-express@3.4.1:
+    resolution: {integrity: sha512-4dJJvr9vQlq9iUClpfm5iFL+neoSctUI6Zkh9F4wjk/tpcM7QVD6niJi4ptiIzyzJCWoN97ACQCXyE0O8MznLQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@codegenie/serverless-express': 3.4.1
+      binary-case: 1.1.4
+      type-is: 1.6.18
+    dev: false
+
   /@webassemblyjs/ast@1.12.1:
     resolution: {integrity: sha512-EKfMUOPRRUTy5UII4qJDGPpqfwjOmZ5jeGFwid9mnoqIFK+e0vqoi1qH56JpmZSzEL53jKnNzScdmftJyG5xWg==}
     dependencies:
@@ -2663,6 +2686,15 @@ packages:
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
+  /aws-serverless-express@3.4.0:
+    resolution: {integrity: sha512-YG9ZjAOI9OpwqDDWzkRc3kKJYJuR7gTMjLa3kAWopO17myoprxskCUyCEee+RKe34tcR4UNrVtgAwW5yDe74bw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@vendia/serverless-express': 3.4.1
+      binary-case: 1.1.4
+      type-is: 1.6.18
+    dev: false
+
   /babel-jest@29.7.0(@babel/core@7.24.7):
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -2755,6 +2787,10 @@ packages:
 
   /batch@0.6.1:
     resolution: {integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==}
+    dev: false
+
+  /binary-case@1.1.4:
+    resolution: {integrity: sha512-9Kq8m6NZTAgy05Ryuh7U3Qc4/ujLQU1AZ5vMw4cr3igTdi5itZC6kCNrRr2X8NzPiDn2oUIFTfa71DKMnue/Zg==}
     dev: false
 
   /binary-extensions@2.3.0:
