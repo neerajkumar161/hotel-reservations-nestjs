@@ -14,6 +14,7 @@ export class GqlExceptionFilter implements ExceptionFilter {
     const gqlHost = GqlArgumentsHost.create(host);
     const ctx = gqlHost.getContext();
 
+    console.log('GqlExceptionFilter -> Exception', exception);
     if (exception instanceof HttpException) {
       // Handle Invalid path because of the way Error is thrown in NestJS for GraphQL, Kind of workaround
       if(exception.message.includes('Cannot GET /')) {

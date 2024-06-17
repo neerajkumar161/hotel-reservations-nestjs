@@ -23,6 +23,7 @@ import { UserModule } from './user/user.module';
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: true,
+      introspection: true,
       // plugins: [ApolloServerPluginLandingPageLocalDefault()],
       formatError: (error: GraphQLError) => {
         const graphQLFormattedError = {
