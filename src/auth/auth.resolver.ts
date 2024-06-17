@@ -4,8 +4,9 @@ import { UserEntity } from '../user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { AuthResponseDto } from './dto/auth-response-dto';
 import { LoginUserDto } from './dto/login-user-dto';
+import { User } from 'src/user/schemas/user.schema';
 
-@Resolver()
+@Resolver(() => UserEntity)
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
