@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { HotelService } from 'src/hotel/hotel.service';
 import { CreateReservationDto } from './dto/create-reservation-dto';
 import { PaginationDto } from './dto/pagination-dto';
@@ -13,7 +13,7 @@ export class ReservationService {
     private hotelService: HotelService,
   ) {}
 
-  async create(reservation: CreateReservationDto) {
+  async create(userId: string, reservation: CreateReservationDto) {
     const hotel = await this.hotelService.findById(
       reservation.hotelId as unknown as string,
     );
@@ -23,7 +23,10 @@ export class ReservationService {
 
     reservation.amount = hotel.baseAmount + hotel.taxAmount;
 
-    const createdReservation = await this.reservationModel.create(reservation);
+    const createdReservation = await this.reservationModel.create({
+      ...reservation,
+      userId: new Types.ObjectId(userId),
+    });
     return createdReservation;
   }
 

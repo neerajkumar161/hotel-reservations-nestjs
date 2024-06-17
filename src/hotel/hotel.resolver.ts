@@ -1,18 +1,26 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver
+} from '@nestjs/graphql';
+import { GqlAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateHotelDto } from './dto/create-hotel-dto';
 import { UpdateHotelDto } from './dto/update-hotel-dto';
 import { HotelEntity } from './entities/hotel.entity';
 import { HotelService } from './hotel.service';
 
 @Resolver('Hotel')
+@UseGuards(GqlAuthGuard)
 export class HotelResolver {
-  constructor(private hotelService: HotelService){}
+  constructor(private hotelService: HotelService) {}
 
   @Query(() => HotelEntity)
   async getHotel(@Args('_id') _id: string) {
     return this.hotelService.findById(_id);
   }
-  
+
   @Query(() => [HotelEntity])
   async getHotels() {
     return this.hotelService.getHotels();
@@ -24,7 +32,10 @@ export class HotelResolver {
   }
 
   @Mutation(() => HotelEntity)
-  async updateHotel(@Args('_id') _id: string, @Args('updateHotelDto') attrs: UpdateHotelDto) {
+  async updateHotel(
+    @Args('_id') _id: string,
+    @Args('updateHotelDto') attrs: UpdateHotelDto,
+  ) {
     return this.hotelService.updateHotel(_id, attrs);
   }
 

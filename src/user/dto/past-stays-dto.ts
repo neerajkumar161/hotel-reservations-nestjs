@@ -12,10 +12,6 @@ export class PastStaysDto {
   @IsNumber()
   limit: number;
 
-  @Field()
-  @IsString()
-  userId: string;
-
   @Field(() => Date)
   @IsDate()
   startDate: Date;

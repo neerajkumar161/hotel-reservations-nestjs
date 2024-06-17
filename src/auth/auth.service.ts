@@ -1,9 +1,16 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { pbkdf2, randomBytes } from 'node:crypto';
 import { promisify } from 'node:util';
 import { CreateUserDto } from 'src/user/dto/create-user-dto';
-import { LoginUserDto } from 'src/user/dto/login-user-dto';
+import { User } from 'src/user/schemas/user.schema';
 import { UserService } from 'src/user/user.service';
+import { AuthResponseDto } from './dto/auth-response-dto';
+import { LoginUserDto } from './dto/login-user-dto';
 
 const pbkdf2Promise = promisify(pbkdf2);
 const KEY_LENGTH = 32;
@@ -11,7 +18,10 @@ const DIGEST = 'sha512';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   async signUp(user: CreateUserDto) {
     // See if email is in use
@@ -26,10 +36,10 @@ export class AuthService {
     return await this.userService.create({ ...user, password: hashedPassword });
   }
 
-  async signIn(loginUser: LoginUserDto) {
+  async signIn(loginUser: LoginUserDto): Promise<AuthResponseDto> {
     const [user] = await this.userService.find(loginUser.email);
     if (!user) {
-      throw new BadRequestException('Invalid credentials');
+      throw new UnauthorizedException();
     }
 
     const isValidPassword = await this.comparePassword(
@@ -37,12 +47,10 @@ export class AuthService {
       loginUser.password,
     );
     if (!isValidPassword) {
-      throw new BadRequestException('Invalid Password');
+      throw new UnauthorizedException();
     }
 
-    
-    const token = this.generateToken(user);
-    return user;
+    return this.generateToken(user);
   }
 
   // We could use the bcrypt library to hash the password (Which is more secure), but we are using the built-in Node.js crypto module
@@ -73,7 +81,9 @@ export class AuthService {
     return hash.toString('hex') === hashedPassword;
   }
 
-  async generateToken(user: any) {
-    return 'randomTokenForNow';
+  generateToken(user: User) {
+    return {
+      accessToken: this.jwtService.sign({ email: user.email, sub: user._id }),
+    };
   }
 }

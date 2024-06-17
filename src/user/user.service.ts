@@ -81,12 +81,12 @@ export class UserService {
       }
   }
 
-  async getPastStays(args: PastStaysDto): Promise<{
+  async getPastStays(args: PastStaysDto, userId: string): Promise<{
     reservations: Reservation[];
     nextCurosr: string;
   }> {
     const query = {
-      userId: new Types.ObjectId(args.userId),
+      userId: new Types.ObjectId(userId),
       departureDate: { $gte: args.startDate, $lte: args.endDate },
     };
 

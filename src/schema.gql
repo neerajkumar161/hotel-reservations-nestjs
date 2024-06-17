@@ -83,10 +83,25 @@ type UserEntity {
   userId: UserObjectDto!
 }
 
+type UserEntityDepricated {
+  id: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  hotelId: String! @deprecated(reason: "Not available!")
+  userId: String! @deprecated(reason: "Not available!")
+}
+
+type AuthResponseDto {
+  accessToken: String!
+}
+
 type Query {
-  hello: String!
-  users: [UserEntity!]!
-  guestSummary(userId: String!): StaySummary!
+  signIn(userInput: LoginUserDto!): AuthResponseDto!
+
+  """Testing Purpose Only!"""
+  getAllUsers: [UserEntityDepricated!]!
+  guestSummary: StaySummary!
   getPastStays(pastStaysArgs: PastStaysDto!): ReservationPage!
   getHotel(_id: String!): HotelEntity!
   getHotels: [HotelEntity!]!
@@ -94,10 +109,14 @@ type Query {
   getReservation(_id: String!): ReservationEntity!
 }
 
+input LoginUserDto {
+  email: String!
+  password: String!
+}
+
 input PastStaysDto {
   cursor: ID
   limit: Int!
-  userId: String!
   startDate: DateTime!
   endDate: DateTime!
 }
@@ -109,7 +128,6 @@ input PaginationDto {
 
 type Mutation {
   signUp(userInput: CreateUserDto!): UserEntity!
-  signIn(userInput: LoginUserDto!): UserEntity!
   createHotel(createHotelDto: CreateHotelDto!): HotelEntity!
   updateHotel(_id: String!, updateHotelDto: UpdateHotelDto!): HotelEntity!
   deleteHotel(_id: String!): HotelEntity!
@@ -121,11 +139,6 @@ input CreateUserDto {
   name: String!
   email: String!
   phoneNumber: String!
-  password: String!
-}
-
-input LoginUserDto {
-  email: String!
   password: String!
 }
 
@@ -152,7 +165,6 @@ input UpdateHotelDto {
 
 input CreateReservationDto {
   hotelId: String!
-  userId: String!
   arrivalDate: DateTime!
   departureDate: DateTime!
 }

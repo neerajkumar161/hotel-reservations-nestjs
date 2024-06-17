@@ -12,7 +12,7 @@ registerEnumType(ReservationStatus, {
 
 @ObjectType()
 export class ReservationEntity
-  extends OmitType(CreateReservationDto, ['hotelId', 'userId'], ObjectType)
+  extends OmitType(CreateReservationDto, ['hotelId'], ObjectType)
   implements Partial<Reservation<HotelObjectDto, UserObjectDto>>
 {
   @Field(() => String)

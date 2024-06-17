@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -7,6 +8,9 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Types } from 'mongoose';
+import { GqlAuthGuard } from 'src/auth/jwt-auth.guard';
+import { TCurrentUser } from 'src/common/types/current-user';
+import { CurrentUser } from 'src/decorators/current-user-decorator';
 import { UserObjectDto } from 'src/user/dto/create-user-dto';
 import { HotelLoader } from '../dataloader/hotel.loader';
 import { UserLoader } from '../dataloader/user.loader';
@@ -18,6 +22,7 @@ import { ReservationEntity } from './entities/reservation.entity';
 import { ReservationService } from './reservation.service';
 
 @Resolver(() => ReservationEntity)
+@UseGuards(GqlAuthGuard)
 export class ReservationResolver {
   constructor(
     private reservationService: ReservationService,
@@ -49,8 +54,9 @@ export class ReservationResolver {
   @Mutation(() => ReservationEntity)
   async createReservation(
     @Args('createReservationDto') createReservationDto: CreateReservationDto,
+    @CurrentUser() user: TCurrentUser,
   ) {
-    return this.reservationService.create(createReservationDto);
+    return this.reservationService.create(user.userId,createReservationDto);
   }
 
   @Mutation(() => String)
