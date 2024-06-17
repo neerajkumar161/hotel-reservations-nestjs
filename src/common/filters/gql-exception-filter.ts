@@ -17,7 +17,7 @@ export class GqlExceptionFilter implements ExceptionFilter {
     console.log('GqlExceptionFilter -> Exception', exception);
     if (exception instanceof HttpException) {
       // Handle Invalid path because of the way Error is thrown in NestJS for GraphQL, Kind of workaround
-      if(exception.message.includes('Cannot GET /') || exception.message.includes('Cannot POST /')) {
+      if(exception.message.includes('Cannot GET /')) {
         return host.switchToHttp().getResponse().send({ message: 'Path not found', code: 404 });
       }
 
