@@ -16,8 +16,7 @@ import { UserModule } from './user/user.module';
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      renderPath: '/api-reference',
-      exclude: ['/graphql']
+      renderPath: '/api-reference'
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
