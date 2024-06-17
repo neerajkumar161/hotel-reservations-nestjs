@@ -1,8 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { Types } from 'mongoose';
-import { HotelService } from 'src/hotel/hotel.service';
-import { Hotel } from 'src/hotel/schemas/hotel.schema';
+import { HotelService } from '../hotel/hotel.service';
+import { Hotel } from '../hotel/schemas/hotel.schema';
 
 @Injectable({ scope: Scope.REQUEST })
 export class HotelLoader {

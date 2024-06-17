@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Hotel } from 'src/hotel/schemas/hotel.schema';
-import { User } from 'src/user/schemas/user.schema';
+import { Hotel } from '../../hotel/schemas/hotel.schema';
+import { User } from '../../user/schemas/user.schema';
 import { TReservation } from '../types/reservation-type';
 
 export type ReservationDocument = HydratedDocument<TReservation>;

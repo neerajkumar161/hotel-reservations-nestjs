@@ -6,9 +6,9 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { pbkdf2, randomBytes } from 'node:crypto';
 import { promisify } from 'node:util';
-import { CreateUserDto } from 'src/user/dto/create-user-dto';
-import { User } from 'src/user/schemas/user.schema';
-import { UserService } from 'src/user/user.service';
+import { CreateUserDto } from '../user/dto/create-user-dto';
+import { User } from '../user/schemas/user.schema';
+import { UserService } from '../user/user.service';
 import { AuthResponseDto } from './dto/auth-response-dto';
 import { LoginUserDto } from './dto/login-user-dto';
 

@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Reservation } from 'src/reservation/schemas/reservation.schema';
+import { TPastStays } from 'src/reservation/types/past-stays';
+import { Reservation } from '../reservation/schemas/reservation.schema';
 import { PastStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { User } from './schemas/user.schema';
@@ -16,7 +17,6 @@ export class UserService {
   ) {}
 
   async create(user: User): Promise<User> {
-    console.log(user);
     const createdUser = await this.userModel.create(user);
     return createdUser;
   }
@@ -81,10 +81,7 @@ export class UserService {
       }
   }
 
-  async getPastStays(args: PastStaysDto, userId: string): Promise<{
-    reservations: Reservation[];
-    nextCurosr: string;
-  }> {
+  async getPastStays(args: PastStaysDto, userId: string): Promise<TPastStays> {
     const query = {
       userId: new Types.ObjectId(userId),
       departureDate: { $gte: args.startDate, $lte: args.endDate },
@@ -101,11 +98,11 @@ export class UserService {
       .exec();
 
     const hasNextPage = pastStays.length > args.limit;
-    const nextCurosr = hasNextPage ? pastStays[args.limit - 1]._id : null;
+    const nextCursor = hasNextPage ? pastStays[args.limit - 1]._id : null;
 
     return {
       reservations: hasNextPage ? pastStays.slice(0, args.limit) : pastStays,
-      nextCurosr,
+      nextCursor,
     };
   }
 

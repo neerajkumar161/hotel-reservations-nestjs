@@ -1,6 +1,6 @@
 import { Field, ObjectType, OmitType, registerEnumType } from '@nestjs/graphql';
-import { HotelObjectDto } from 'src/hotel/dto/create-hotel-dto';
-import { UserObjectDto } from 'src/user/dto/create-user-dto';
+import { HotelObjectDto } from '../../hotel/dto/create-hotel-dto';
+import { UserObjectDto } from '../../user/dto/create-user-dto';
 import { CreateReservationDto } from '../dto/create-reservation-dto';
 import { ReservationStatus } from '../enum/reservation-status';
 import { Reservation } from '../schemas/reservation.schema';

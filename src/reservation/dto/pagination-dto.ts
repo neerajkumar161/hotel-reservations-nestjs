@@ -6,7 +6,7 @@ export class PaginationDto {
   @Field(() => ID, { nullable: true })
   @IsString()
   @IsOptional()
-  cursor: string;
+  cursor?: string;
 
   @Field(() => Int)
   @IsNumber()

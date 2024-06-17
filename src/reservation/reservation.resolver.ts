@@ -8,13 +8,13 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { GqlAuthGuard } from 'src/auth/jwt-auth.guard';
-import { TCurrentUser } from 'src/common/types/current-user';
-import { CurrentUser } from 'src/decorators/current-user-decorator';
-import { UserObjectDto } from 'src/user/dto/create-user-dto';
+import { GqlAuthGuard } from '../auth/jwt-auth.guard';
+import { TCurrentUser } from '../common/types/current-user';
 import { HotelLoader } from '../dataloader/hotel.loader';
 import { UserLoader } from '../dataloader/user.loader';
+import { CurrentUser } from '../decorators/current-user-decorator';
 import { HotelObjectDto } from '../hotel/dto/create-hotel-dto';
+import { UserObjectDto } from '../user/dto/create-user-dto';
 import { CreateReservationDto } from './dto/create-reservation-dto';
 import { PaginationDto } from './dto/pagination-dto';
 import { ReservationPage } from './entities/reservation-page-dto';

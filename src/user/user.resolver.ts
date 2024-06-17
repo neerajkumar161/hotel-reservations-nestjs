@@ -1,14 +1,14 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { GqlAuthGuard } from 'src/auth/jwt-auth.guard';
-import { TCurrentUser } from 'src/common/types/current-user';
-import { HotelLoader } from 'src/dataloader/hotel.loader';
-import { UserLoader } from 'src/dataloader/user.loader';
-import { CurrentUser } from 'src/decorators/current-user-decorator';
-import { HotelObjectDto } from 'src/hotel/dto/create-hotel-dto';
-import { ReservationPage } from 'src/reservation/entities/reservation-page-dto';
-import { ReservationEntity } from 'src/reservation/entities/reservation.entity';
+import { GqlAuthGuard } from '../auth/jwt-auth.guard';
+import { TCurrentUser } from '../common/types/current-user';
+import { HotelLoader } from '../dataloader/hotel.loader';
+import { UserLoader } from '../dataloader/user.loader';
+import { CurrentUser } from '../decorators/current-user-decorator';
+import { HotelObjectDto } from '../hotel/dto/create-hotel-dto';
+import { ReservationPage } from '../reservation/entities/reservation-page-dto';
+import { ReservationEntity } from '../reservation/entities/reservation.entity';
 import { UserObjectDto } from './dto/create-user-dto';
 import { PastStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
@@ -39,7 +39,7 @@ export class UserResolver {
     @Args('pastStaysArgs') args: PastStaysDto,
     @CurrentUser() user: TCurrentUser,
   ) {
-    const { reservations, nextCurosr } = await this.userService.getPastStays(
+    const { reservations, nextCursor } = await this.userService.getPastStays(
       args,
       user.userId,
     );
@@ -49,7 +49,7 @@ export class UserResolver {
       node: reservation,
     }));
 
-    return { edges, nextCurosr };
+    return { edges, nextCursor };
   }
 
   @ResolveField(() => HotelObjectDto)

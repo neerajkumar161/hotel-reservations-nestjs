@@ -5,7 +5,7 @@ import {
   Query,
   Resolver
 } from '@nestjs/graphql';
-import { GqlAuthGuard } from 'src/auth/jwt-auth.guard';
+import { GqlAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateHotelDto } from './dto/create-hotel-dto';
 import { UpdateHotelDto } from './dto/update-hotel-dto';
 import { HotelEntity } from './entities/hotel.entity';

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { HotelService } from 'src/hotel/hotel.service';
+import { HotelService } from '../hotel/hotel.service';
 import { CreateReservationDto } from './dto/create-reservation-dto';
 import { PaginationDto } from './dto/pagination-dto';
 import { Reservation } from './schemas/reservation.schema';
