@@ -29,7 +29,6 @@ import { UserModule } from './user/user.module';
         };
         return graphQLFormattedError;
       },
-
     }),
     ConfigModule.forRoot({
       isGlobal: true,

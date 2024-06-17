@@ -1,8 +1,8 @@
 {
   "name": "hotel-reservations-nestjs",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "A NestJS repo for hotel reservations in GraphQL",
+  "author": "Neeraj Kumar",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -81,5 +81,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": ">=18.20.1",
+    "pnpm": ">=8.15.6"
   }
 }
