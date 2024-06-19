@@ -1,12 +1,12 @@
+import { NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model, Types } from 'mongoose';
 import { Reservation } from '../reservation/schemas/reservation.schema';
-import { PastStaysDto } from './dto/past-stays-dto';
+import { GetStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { User } from './schemas/user.schema';
 import { UserService } from './user.service';
-import { NotFoundException } from '@nestjs/common';
 
 const mockObjectId = new Types.ObjectId() as unknown as string;
 
@@ -30,7 +30,7 @@ const mockUserStaySummary: StaySummary = {
   upComingTotalAmount: 100,
 };
 
-const mockPastStayArgs: PastStaysDto = {
+const mockPastStayArgs: GetStaysDto = {
   cursor: '1',
   limit: 10,
   startDate: new Date('2024-06-15'),

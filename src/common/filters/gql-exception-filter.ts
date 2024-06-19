@@ -20,9 +20,8 @@ export class GqlExceptionFilter implements ExceptionFilter {
       if(exception.message.includes('Cannot GET /')) {
         return host.switchToHttp().getResponse().send({ message: 'Path not found', code: 404 });
       }
-
       const status = exception.getStatus();
-      const message = exception.message || null;
+      const message = exception.getResponse()['message'] ?? exception.message;
       throw new ApolloError(message, status.toString());
     } else {
       const status = HttpStatus.INTERNAL_SERVER_ERROR;

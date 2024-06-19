@@ -10,7 +10,7 @@ import { HotelObjectDto } from '../hotel/dto/create-hotel-dto';
 import { ReservationPage } from '../reservation/entities/reservation-page-dto';
 import { ReservationEntity } from '../reservation/entities/reservation.entity';
 import { UserObjectDto } from './dto/create-user-dto';
-import { PastStaysDto } from './dto/past-stays-dto';
+import { GetStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { UserEntity, UserEntityDepricated } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -35,8 +35,8 @@ export class UserResolver {
   }
 
   @Query(() => ReservationPage)
-  async getPastStays(
-    @Args('pastStaysArgs') args: PastStaysDto,
+  async getStaysInRange(
+    @Args('getStaysArgs') args: GetStaysDto,
     @CurrentUser() user: TCurrentUser,
   ) {
     const { reservations, nextCursor } = await this.userService.getPastStays(

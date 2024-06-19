@@ -20,6 +20,7 @@ import { PaginationDto } from './dto/pagination-dto';
 import { ReservationPage } from './entities/reservation-page-dto';
 import { ReservationEntity } from './entities/reservation.entity';
 import { ReservationService } from './reservation.service';
+import { UpdateReservationDto } from './dto/update-reservation-dto';
 
 @Resolver(() => ReservationEntity)
 @UseGuards(GqlAuthGuard)
@@ -57,6 +58,16 @@ export class ReservationResolver {
     @CurrentUser() user: TCurrentUser,
   ) {
     return this.reservationService.create(user.userId,createReservationDto);
+  }
+
+  @Mutation(() => ReservationEntity)
+  async updateReservation(
+    @Args('_id') _id: string,
+    @Args('updateReservationDto') updateReservationDto: UpdateReservationDto,
+    @CurrentUser() user: TCurrentUser,
+  ) {
+
+    return this.reservationService.updateReservation(_id, user.userId, updateReservationDto);
   }
 
   @Mutation(() => String)

@@ -77,68 +77,273 @@ To check complete documentation of the GraphQL endpoints visit [API Reference](h
 - `/graphql-root` for graphQL inspection
 
 
-## Test Example
+## Test Examples to execute queries and mutations on graphql playground
 To get all reservations of the user, you need to follow these steps
  - Sign up using query signup
  - Sign in and get token to access all protected queries and mutation
  - Pass the Authentication token in headers as { Authorization: Bearer <YOUR_TOKEN>}
  - Use variables that need to pass to the query.
- - Below is the example. 
-  ```ts
-  query SignIn($userInput: LoginUserDto!) {
-    signIn(userInput: $userInput) {
-      accessToken
+ - Below are the examples. 
+
+### User Signin
+```ts
+query Query($userInput: LoginUserDto!) {
+  signIn(userInput: $userInput) {
+    accessToken
+  }
+}
+
+/* Variables */
+{
+  "userInput": {
+    "email": "test@test.com",
+    "password": "tester"
+  }
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+### User Signup
+```ts
+mutation Mutation($userInput: CreateUserDto!) {
+  signUp(userInput: $userInput) {
+    id
+    name
+    email
+    phoneNumber
+  }
+}
+
+/* Variables */
+{
+  "userInput": {
+    "email": "test5@test.com",
+    "name": "Test 5 User",
+    "password": "tester",
+    "phoneNumber": "1-212-456-7890"
+  }
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+### Get all hotels
+```ts
+query GetHotels {
+  getHotels {
+    _id
+    name
+    location {
+      lat
+      long
     }
+    rating
+    baseAmount
+    taxAmount
   }
-  // Variables
-  {
-    userInput: { "email": "test@test.com", "password": "tester" }
+}
+
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+### Create Reservation
+```ts
+mutation CreateReservation($createReservationDto: CreateReservationDto!) {
+  createReservation(createReservationDto: $createReservationDto) {
+    arrivalDate
+    departureDate
+    _id
+    hotelId {
+      _id
+      name
+    }
+    userId {
+      _id
+      name
+    }
+    amount
+    status
   }
-  // Headers
-  { Authorization: Bearer <accessToken> }
-  ```
- ```ts
- 
- query GetReservations($paginationDto: PaginationDto!) {
-    getReservations(paginationDto: $paginationDto) {
-      edges {
-        cursor
-        node {
-          ...ReservationEntityFragment
+}
+
+/* Variables */
+{
+  "createReservationDto": {
+    "arrivalDate": "2024-06-28T08:41:41.143Z",
+    "departureDate": "2024-06-29T08:41:41.143Z",
+    "hotelId": "666d7ec4319cadc293131d76"
+  }
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+### Get All Reservations [All not for specific user]
+```ts
+query Query($paginationDto: PaginationDto!) {
+  getReservations(paginationDto: $paginationDto) {
+    edges {
+      cursor
+      node {
+        _id
+        amount
+        arrivalDate
+        departureDate
+        status
+        userId {
+          name
+          _id
+        }
+        hotelId {
+          _id
+          name
         }
       }
-      nextCursor
     }
   }
+}
 
-  // Sample Response
-  {
-    data: {
-      getReservations: {
-        nextCursor: '666da4096b3835179380424d',
-        edges: [
-          {
-            cursor: '666da4096b3835179380424d',
-            node: {
-              arrivalDate: '2024-06-17T13:55:09.491Z',
-              departureDate: '2024-06-18T13:55:09.491Z',
-              _id: '666da4096b3835179380424d',
-              hotelId: {
-                name: 'LXR Hotels and Resort'
-              },
-              userId: {
-                name: 'Test User',
-                _id: '666c7c6d7b31da3ccdeb7036'
-              },
-              amount: 8000,
-              status: 'active'
-            }
-          }
-        ]
+/* Variables */
+{
+  "paginationDto": {
+    "cursor": null,
+    "limit": 20
+  }
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+
+### Get Reservation by ID
+```ts
+query GetReservation($id: String!) {
+  getReservation(_id: $id) {
+    arrivalDate
+    departureDate
+    _id
+    hotelId {
+      _id
+      name
+    }
+    userId {
+      _id
+      name
+    }
+    amount
+    status
+  }
+}
+/* Variables */
+{
+  "id": "66729c85228a9875dce161d0"
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+### Cancel Reservation
+```ts
+mutation Mutation($id: String!) {
+  cancelReservation(_id: $id)
+}
+
+/* Variables */
+{
+  "id": "666da4096b3835179380424d"
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+
+### Update Reservation
+```ts
+mutation UpdateReservation($id: String!, $updateReservationDto: UpdateReservationDto!) {
+  updateReservation(_id: $id, updateReservationDto: $updateReservationDto) {
+    arrivalDate
+    departureDate
+    _id
+    hotelId {
+      _id
+      name
+    }
+    userId {
+      _id
+      name
+    }
+    amount
+    status
+  }
+}
+
+/* Variables */
+{
+  "updateReservationDto": {
+    "arrivalDate": "2024-07-10T08:41:41.143Z",
+    "departureDate": "2024-07-11T08:41:41.143Z",
+    "amount": 1200
+  },
+  "id": "66729c85228a9875dce161d0"
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+
+### Get Guest Stay Summary
+```ts
+query GuestSummary {
+  guestSummary {
+    guestId
+    upcomingStaysCount
+    upComingTotalAmount
+    upComingTotalNights
+    pastStaysCount
+    pastTotalAmount
+    pastTotalNights
+    cancelledStaysCount
+    totalStaysAmount
+  }
+}
+
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+
+### Get Stays In Range (Start to End Date)
+```ts
+query GetStaysInRange($getStaysArgs: GetStaysDto!) {
+  getStaysInRange(getStaysArgs: $getStaysArgs) {
+    nextCursor
+    edges {
+      cursor
+      node {
+        arrivalDate
+        departureDate
+        _id
+        hotelId {
+          _id
+          name
+        }
+        userId {
+          _id
+          name
+        }
+        amount
+        status
       }
     }
-  };
- ```
+  }
+}
+
+/* Variables */
+{
+  "getStaysArgs": {
+    "cursor": null,
+    "limit": 20,
+    "startDate": "2024-05-10T08:41:41.143Z",
+    "endDate": "2024-07-10T08:41:41.143Z"
+  }
+}
+/* Headers */
+{ Authorization: Bearer <accessToken> }
+```
+
 ## Deployment
 To run complete application here is the [CodeSanbox](https://codesandbox.io/p/github/neerajkumar161/hotel-reservations-nestjs/main?import=true&layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clxjahjhg00063b6tsg0zlk44%2522%252C%2522sizes%2522%253A%255Bnull%252Cnull%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clxjahjhg00023b6t2qfiyyss%2522%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clxjahjhg00043b6tbj3jkpwx%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clxjahjhg00053b6tivcmyppf%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%252C%2522sizes%2522%253A%255B40.95098115316364%252C59.04901884683636%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clxjahjhg00023b6t2qfiyyss%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clxjahjhg00013b6t161mylsm%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522FILE%2522%252C%2522filepath%2522%253A%2522%252FREADME.md%2522%252C%2522state%2522%253A%2522IDLE%2522%257D%255D%252C%2522id%2522%253A%2522clxjahjhg00023b6t2qfiyyss%2522%252C%2522activeTabId%2522%253A%2522clxjahjhg00013b6t161mylsm%2522%257D%252C%2522clxjahjhg00053b6tivcmyppf%2522%253A%257B%2522id%2522%253A%2522clxjahjhg00053b6tivcmyppf%2522%252C%2522tabs%2522%253A%255B%255D%257D%252C%2522clxjahjhg00043b6tbj3jkpwx%2522%253A%257B%2522id%2522%253A%2522clxjahjhg00043b6tbj3jkpwx%2522%252C%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clxjahjhg00033b6t9hvsvcvj%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522TERMINAL%2522%252C%2522shellId%2522%253A%2522clxjahk2n0037dbgjceij7fee%2522%257D%255D%252C%2522activeTabId%2522%253A%2522clxjahjhg00033b6t9hvsvcvj%2522%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Atrue%252C%2522showSidebar%2522%253Atrue%252C%2522sidebarPanelSize%2522%253A19.69576719576719%257D) URL
 ## Error Handling

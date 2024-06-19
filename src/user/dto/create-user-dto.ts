@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
-import { IsEmail, IsPhoneNumber, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateUserDto {
@@ -15,7 +15,7 @@ export class CreateUserDto {
 
   @Field()
   @IsString()
-  @IsPhoneNumber()
+  @MaxLength(15)
   readonly phoneNumber: string;
 
   @Field()

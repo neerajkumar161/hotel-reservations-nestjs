@@ -102,7 +102,7 @@ type Query {
   """Testing Purpose Only!"""
   getAllUsers: [UserEntityDepricated!]!
   guestSummary: StaySummary!
-  getPastStays(pastStaysArgs: PastStaysDto!): ReservationPage!
+  getStaysInRange(getStaysArgs: GetStaysDto!): ReservationPage!
   getHotel(_id: String!): HotelEntity!
   getHotels: [HotelEntity!]!
   getReservations(paginationDto: PaginationDto!): ReservationPage!
@@ -114,7 +114,7 @@ input LoginUserDto {
   password: String!
 }
 
-input PastStaysDto {
+input GetStaysDto {
   cursor: ID
   limit: Int!
   startDate: DateTime!
@@ -132,6 +132,7 @@ type Mutation {
   updateHotel(_id: String!, updateHotelDto: UpdateHotelDto!): HotelEntity!
   deleteHotel(_id: String!): HotelEntity!
   createReservation(createReservationDto: CreateReservationDto!): ReservationEntity!
+  updateReservation(_id: String!, updateReservationDto: UpdateReservationDto!): ReservationEntity!
   cancelReservation(_id: String!): String!
 }
 
@@ -167,4 +168,11 @@ input CreateReservationDto {
   hotelId: String!
   arrivalDate: DateTime!
   departureDate: DateTime!
+}
+
+input UpdateReservationDto {
+  arrivalDate: DateTime!
+  departureDate: DateTime!
+  amount: Int
+  status: ReservationStatus
 }

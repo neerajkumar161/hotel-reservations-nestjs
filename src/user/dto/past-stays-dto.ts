@@ -2,7 +2,7 @@ import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
-export class PastStaysDto {
+export class GetStaysDto {
   @Field(() => ID, { nullable: true })
   @IsString()
   @IsOptional()

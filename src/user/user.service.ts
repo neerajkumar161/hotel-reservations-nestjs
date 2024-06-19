@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { TPastStays } from 'src/reservation/types/past-stays';
 import { Reservation } from '../reservation/schemas/reservation.schema';
-import { PastStaysDto } from './dto/past-stays-dto';
+import { GetStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { User } from './schemas/user.schema';
 
@@ -31,7 +31,7 @@ export class UserService {
 
   async getUserStaySummary(userId: string): Promise<StaySummary> {
     const userReservations = await this.reservationModel
-      .find({ userId: new Types.ObjectId(userId) })
+      .find({ userId: new Types.ObjectId(userId), status: 'active' })
       .populate({
         path: 'hotelId',
       })
@@ -81,10 +81,11 @@ export class UserService {
       }
   }
 
-  async getPastStays(args: PastStaysDto, userId: string): Promise<TPastStays> {
+  async getPastStays(args: GetStaysDto, userId: string): Promise<TPastStays> {
     const query = {
       userId: new Types.ObjectId(userId),
       departureDate: { $gte: args.startDate, $lte: args.endDate },
+      status: 'active',
     };
 
     if (args.cursor) {

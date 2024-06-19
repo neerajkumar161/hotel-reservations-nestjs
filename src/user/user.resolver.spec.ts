@@ -5,7 +5,7 @@ import { TPastStays } from 'src/reservation/types/past-stays';
 import { TCurrentUser } from '../common/types/current-user';
 import { HotelLoader } from '../dataloader/hotel.loader';
 import { UserLoader } from '../dataloader/user.loader';
-import { PastStaysDto } from './dto/past-stays-dto';
+import { GetStaysDto } from './dto/past-stays-dto';
 import { StaySummary } from './entities/stay-summary.entity';
 import { User } from './schemas/user.schema';
 import { UserResolver } from './user.resolver';
@@ -40,7 +40,7 @@ const mockPastStays: TPastStays = {
   nextCursor: '1',
 };
 
-const mockPastStayArgs: PastStaysDto = {
+const mockPastStayArgs: GetStaysDto = {
   cursor: '1',
   limit: 10,
   startDate: new Date('2024-06-15'),
@@ -92,7 +92,7 @@ describe('UserResolver', () => {
   });
 
   it('should get pastStays', async () => {
-    const response = await resolver.getPastStays(
+    const response = await resolver.getStaysInRange(
       mockPastStayArgs,
       mockCurrentUser,
     );
