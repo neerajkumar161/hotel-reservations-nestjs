@@ -1,18 +1,17 @@
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model, Types } from 'mongoose';
 import { HotelService } from '../hotel/hotel.service';
 import { Hotel } from '../hotel/schemas/hotel.schema';
-import { User } from '../user/schemas/user.schema';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './schemas/reservation.schema';
-import { NotFoundException } from '@nestjs/common';
 
 const mockObjectId = new Types.ObjectId() as unknown as string;
 
 const mockReservation: Reservation = {
   _id: '1',
-  hotelId: '1',
+  hotelId: mockObjectId,
   userId: '1',
   amount: 100,
   status: 'active',
@@ -76,6 +75,15 @@ describe('ReservationService', () => {
       .mockRejectedValueOnce(new NotFoundException('Hotel not found'));
     expect(service.create(mockObjectId, mockReservation)).rejects.toThrow(
       NotFoundException,
+    );
+  });
+
+  it('should create the reservation but throw an error when arrivalDate and Departure date for reservation already exists', () => {
+    jest
+      .spyOn(service, 'create')
+      .mockRejectedValueOnce(new BadRequestException('Hotel not found'));
+    expect(service.create(mockObjectId, mockReservation)).rejects.toThrow(
+      BadRequestException,
     );
   });
 

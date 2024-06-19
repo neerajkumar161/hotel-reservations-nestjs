@@ -16,7 +16,7 @@ export class ReservationService {
 
   async create(userId: string, reservation: CreateReservationDto) {
     const hotel = await this.hotelService.findById(
-      reservation.hotelId as unknown as string,
+      reservation.hotelId,
     );
     if (!hotel) {
       throw new NotFoundException('Hotel not found');
